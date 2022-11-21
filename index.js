@@ -37,7 +37,7 @@ async function run() {
       res.send(product);
     });
 
-    // Edit Specific Product
+    // Add new stock Product
     app.put("/shoe/:id", async (req, res) => {
       const id = req.params.id;
       const updateUser = req.body;
@@ -51,6 +51,21 @@ async function run() {
       const result = await shoescollection.updateOne(filter, updateDoc, options);
       res.send(result);
     });
+
+    // Decrease Stock
+    app.put("/shoeStockDecrease/:id", async (req, res) => { 
+      const id = req.params.id;
+      const updateUser = req.body;
+      const filter = {_id: ObjectId(id)}
+      const options = { upsert: true };
+
+      const updateDoc = {
+        $set: updateUser,
+      };
+
+      const result = await shoescollection.updateOne(filter, updateDoc, options);
+      res.send(result);
+    })
   } finally {
     // await client.close();
   }
