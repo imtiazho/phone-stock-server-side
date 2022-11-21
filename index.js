@@ -48,24 +48,47 @@ async function run() {
         $set: updateUser,
       };
 
-      const result = await shoescollection.updateOne(filter, updateDoc, options);
+      const result = await shoescollection.updateOne(
+        filter,
+        updateDoc,
+        options
+      );
       res.send(result);
     });
 
     // Decrease Stock
-    app.put("/shoeStockDecrease/:id", async (req, res) => { 
+    app.put("/shoeStockDecrease/:id", async (req, res) => {
       const id = req.params.id;
       const updateUser = req.body;
-      const filter = {_id: ObjectId(id)}
+      const filter = { _id: ObjectId(id) };
       const options = { upsert: true };
 
       const updateDoc = {
         $set: updateUser,
       };
 
-      const result = await shoescollection.updateOne(filter, updateDoc, options);
+      const result = await shoescollection.updateOne(
+        filter,
+        updateDoc,
+        options
+      );
       res.send(result);
-    })
+    });
+
+    // Delete One
+    app.delete("/manageInventory/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = {_id: ObjectId(id)}
+      const result = await shoescollection.deleteOne(query);
+      res.send(result)
+    });
+
+    // Post Data
+    app.post("/shoes", async (req, res) => {
+      const product = req.body;
+      const result = await shoescollection.insertOne(product);
+      res.send(result);
+    });
   } finally {
     // await client.close();
   }
